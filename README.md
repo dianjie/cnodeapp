@@ -4,6 +4,8 @@
 
 webapp版：[线上访问](jjboom.net/cnode)
 
+app下载：[下载地址](http://jjboom.net/CNode.apk)
+
 实现功能：
   1. 登录
   2. 获取主题
