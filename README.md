@@ -22,12 +22,16 @@ webapp版：[线上访问](jjboom.net/cnode)
     git clone https://github.com/dianjie/cnodeapp.git
 
 ### 安装cordova插件 ###
+
     cordova plugin add cordova-plugin-whitelist && cordova plugin add cordova-plugin-splashscreen && cordova plu gin add cordova-hot-code-push-plugin
 - `cordova-hot-code-push-plugin`只是为了处理代码热更新（具体使用看官方文档，其他依赖自行安装）
+
 ### 安装依赖 ###
     npm install
+    
 ### 开发测试 ###
     npm start
+    
 ### 发布代码 ###
     npm run build
 - 发布代码后需替换css的字体文件`//at.alicdn.com/t/`全部替换成`../lib/`(找不到插件替换。。[黑脸。黑脸])
