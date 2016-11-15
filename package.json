@@ -55,6 +55,9 @@
   "cordovaPlugins": [
     "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
-    "cordova-hot-code-push-plugin"
+    "cordova-hot-code-push-plugin",
+    "phonegap-plugin-barcodescanner",
+    "cordova-plugin-inappbrowser",
+    "cordova-plugin-device"
   ]
 }
