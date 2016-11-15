@@ -25,7 +25,8 @@ app下载：[下载地址](http://jjboom.net/CNode.apk)
 
 ### 安装cordova插件 ###
 
-    cordova plugin add cordova-plugin-whitelist && cordova plugin add cordova-plugin-splashscreen && cordova plu gin add cordova-hot-code-push-plugin
+    cordova plugin add cordova-plugin-whitelist && cordova plugin add cordova-plugin-splashscreen && cordova plugin add cordova-hot-code-push-plugin && cordova plugin add phonegap-plugin-barcodescanner && cordova plugin add cordova-plugin-inappbrowser && cordova plugin add cordova-plugin-device
+    
 - `cordova-hot-code-push-plugin`只是为了处理代码热更新（具体使用看官方文档，其他依赖自行安装）
 
 ### 安装依赖 ###
