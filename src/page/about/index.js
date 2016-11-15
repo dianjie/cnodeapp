@@ -24,7 +24,7 @@ class UserHome extends Component {
                 <div className="detail_content">
                     <div>
                         <h3>项目地址</h3>
-                        <p><a href="https://github.com/dianjie/cnode" target="_blank">https://github.com/dianjie/cnode</a></p>
+                        <p><a href="https://github.com/dianjie/cnodeapp" target="_blank">https://github.com/dianjie/cnode</a></p>
                     </div>
                     <div>
                         <h3>版本</h3>

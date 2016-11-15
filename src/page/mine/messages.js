@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import {setNavBarTitle,setNavBarPoints,resetNavBarPoints,getMesList,setAllMesIsRead,setMesList} from 'REDUX/action'
 import {List} from 'antd-mobile'
-import {dateDiff,replaceContent} from 'SYSTEM/tool'
+import {dateDiff,replaceContent,replaceImgUrl} from 'SYSTEM/tool'
 class MyMessages extends Component{
     constructor(props){
         super(props);
@@ -36,7 +36,7 @@ class MyMessages extends Component{
                         <div className="list_item" key={key}>
                             <div className="content_wrapper item_avatar">
                                 <Link>
-                                    <img className="border_img" src={item.author.avatar_url} />
+                                    <img className="border_img" src={replaceImgUrl(item.author.avatar_url)} />
                                 </Link>
                                 <p style={{fontSize:'.26rem'}}><Link to={`user/${item.author.loginname}`}>{item.author.loginname}</Link>在话题 <Link to={`topic/${item.topic.id}`}>{item.topic.title}</Link>中@了你</p>
                                 <p>{dateDiff(item.reply.create_at)}</p>

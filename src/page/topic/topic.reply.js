@@ -2,7 +2,7 @@
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import {Toast,Icon,Button} from 'antd-mobile'
-import {dateDiff,replaceContent,setTail} from 'SYSTEM/tool'
+import {dateDiff,replaceContent,setTail,replaceImgUrl} from 'SYSTEM/tool'
 import {apiHostUrl} from 'SYSTEM/system'
 import {loginTips,loadTopicDetail} from 'REDUX/action';
 import ajax from '@fdaciuk/ajax'
@@ -99,7 +99,7 @@ class TopicReply extends Component{
             <div className="list_item" key={index}>
                 <div className="content_wrapper item_avatar">
                     <Link>
-                        <img className="border_img" src={reply.author.avatar_url} />
+                        <img className="border_img" src={replaceImgUrl(reply.author.avatar_url)} />
                     </Link>
                     <p>{reply.author.loginname}</p>
                     <p>{index+1+"楼"}•{dateDiff(reply.create_at)}</p>

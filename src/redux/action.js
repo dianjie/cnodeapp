@@ -258,6 +258,7 @@ export const handleLogin=(accesstoken)=>{
             dispatch(setLoginAccessToken(accesstoken));
             dispatch(setIsLogin(true));
         }).catch((error) => {
+            Toast.fail(error.error_msg);
             removeLocalData('accessToken');
             //重置账号信息
             dispatch(setAccountInfo({

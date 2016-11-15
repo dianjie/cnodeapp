@@ -1,6 +1,7 @@
 /**
  * Created by yzsoft on 16/5/13.
  */
+import {store} from 'REDUX/store'
 export  const  checkMobile=(mobile)=>{
   let phone = mobile;
   let reg = /^1[3|4|5|7|8]\d{9}$/;
@@ -67,26 +68,43 @@ export const dateDiff = function(hisTime,nowTime){
   return result;
 };
 export const replaceContent=(content)=>{
+  let state=store.getState();
+  let {system:{network,loadImg}}=state;
   //替换链接跳转到https://cnodejs.org的链接
   content=content.replace(/https:\/\/cnodejs.org/ig,'#');
-  //让所有超链接新开页面打开
-  content = content.replace(/<a(.*?)>/ig, function($){
-    return $.slice(0,-1)+` target="_blank">`;
-  });
   //替换用户主页
   content=content.replace(/href="\/user/ig,'href="#/user');
-  //打包app时候有需要用到
-  content=content.replace(/src="\/\//ig,function () {
-    //app下的默认http:
-    if(window.location.protocol=='file:'){
-      return `src="http://`
+  //让所有超链接新开页面打开
+  content = content.replace(/<a(.*?)>/ig, function($){
+    //域内链接
+    if($.indexOf('href="#')!== -1){
+        return $;
     }else {
-      return `src="${window.location.protocol}//`
+        //域外链接
+        let url=$.match(/href="(.*?)"/)[1];
+        let clickFun=`window.open('${url}', '_system','location=yes');`;
+        return `<a href="javascript:void(0)" onclick="${clickFun}">`;
     }
+  });
+  content=content.replace(/src="\/\//ig,function () {
+      //app下的默认http:
+      if(window.location.protocol=='file:'){
+          return `src="http://`
+      }else {
+          return `src="${window.location.protocol}//`
+      }
   });
   return content;
 };
 export const setTail=(content)=>{
   return `${content}
           使用[antd-moblie[cnode]版](https://github.com/dianjie/cnode)`
+};
+//某些头像地址还是//情况
+export const replaceImgUrl=(url)=>{
+    if(url.indexOf('//')==0){
+        return `http:${url}`
+    }else {
+        return url
+    }
 };

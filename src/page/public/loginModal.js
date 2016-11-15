@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import {connect} from 'react-redux'
 import {setLoginModalVisible,setLoginAccessToken,handleLogin} from 'REDUX/action'
-import {Modal} from 'antd-mobile'
+import {Modal,Toast} from 'antd-mobile'
 class LoginModal extends Component{
     constructor(props){
         super(props);
@@ -27,6 +27,27 @@ class LoginModal extends Component{
         dispatch(handleLogin(loginModal.accessToken));
         this.onClose();
     }
+    handleScan(){
+        let self=this;
+        self.onClose();
+        const {dispatch}=this.props;
+        cordova.plugins.barcodeScanner.scan(
+            function (result) {
+                dispatch(handleLogin(result.text));
+            },
+            function (error) {
+                self.onClose();
+                Toast.fail(`扫描失败：${error}`);
+            },
+            {
+                "preferFrontCamera" : false, // iOS and Android
+                "showFlipCameraButton" : false, // iOS and Android
+                "prompt" : "码快来到扫描区域内...", // supported on Android only
+                "formats" : "all", // default: all but PDF_417 and RSS_EXPANDED
+                "orientation" : "portrait" // Android only (portrait|landscape), default unset so it rotates with the device
+            }
+        );
+    }
     render(){
         const {loginModal}=this.props;
         const {visible,accessToken}=loginModal;
@@ -37,7 +58,10 @@ class LoginModal extends Component{
                 transparent
                 onClose={this.onClose}
                 visible={visible}
-                footer={[{ text: '确定', onPress: () => {this.handlePress()} }]}
+                footer={[
+                    { text: 'token登录', onPress: () => {this.handlePress()} },
+                    { text: '扫码', onPress: () => {this.handleScan()} }
+                ]}
             >
                <div className="loginModal">
                    <input

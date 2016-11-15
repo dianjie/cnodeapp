@@ -2,15 +2,21 @@ import React, {Component} from 'react'
 import {Link,hashHistory} from 'react-router'
 import {connect} from 'react-redux'
 import {loadTopics,setNavBarTitle,setNavBarPoints} from 'REDUX/action'
-import {getTopicAndBg,dateDiff} from 'SYSTEM/tool'
+import {getTopicAndBg,dateDiff,replaceImgUrl} from 'SYSTEM/tool'
 import { ListView,Icon} from 'antd-mobile'
 class TopicsList extends Component {
     constructor(props){
         super(props);
     }
+    componentWillMount(){
+        let {topics:{list}}=this.props;
+        if(list.length==0){
+            this._loadMoreData();
+        }
+    }
     componentDidMount(){
-        this._loadMoreData();
         const {dispatch,params} = this.props;
+        console.log(this.refs);
         let topics=getTopicAndBg(params.tabName).type;
         dispatch(setNavBarTitle(topics));
         dispatch(setNavBarPoints({
@@ -28,7 +34,7 @@ class TopicsList extends Component {
                 <Link className="item_title" to={'topic/'+rowData.id}><span className="topics_tab" style={{backgroundColor:obj.bgColor}}>{obj.type}</span>{rowData.title}</Link>
                 <div className="content_wrapper item_avatar">
                     <Link to={`user/${rowData.author.loginname}`}>
-                        <img className="border_img" src={rowData.author.avatar_url} />
+                        <img className="border_img" src={replaceImgUrl(rowData.author.avatar_url)} />
                     </Link>
                     <p>{`${rowData.reply_count}/${rowData.visit_count}`}</p>
                     <p>{dateDiff(rowData.last_reply_at)}</p>
@@ -54,6 +60,7 @@ class TopicsList extends Component {
         return (
             <div className="pt_09">
                 <ListView
+                    ref="topicList"
                     dataSource={ds.cloneWithRows(list)}
                     initialListSize={10}
                     useBodyScroll

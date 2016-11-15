@@ -33,7 +33,7 @@ class TopicsDetail extends  Component{
     componentWillReceiveProps(nextProps){
         if(this.props.params.topicId !== nextProps.params.topicId){
             //滚动条归0
-            document.body.scrollTop=document.documentElement.scrollTop=0;
+            // document.body.scrollTop=document.documentElement.scrollTop=0;
             this.loadDetail(nextProps.params.topicId)
         }
     }

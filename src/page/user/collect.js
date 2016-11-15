@@ -2,7 +2,7 @@ import React,{Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import {getCollectList,setNavBarTitle,setNavBarPoints,setAccountCollect} from 'REDUX/action'
-import {getTopicAndBg,dateDiff} from 'SYSTEM/tool'
+import {getTopicAndBg,dateDiff,replaceImgUrl} from 'SYSTEM/tool'
 import { ListView } from 'antd-mobile'
 class UserCollect extends Component{
     constructor(props){
@@ -31,7 +31,7 @@ class UserCollect extends Component{
     componentWillReceiveProps(nextProps){
         if(this.props.params.loginName !== nextProps.params.loginName){
             //滚动条归0
-            document.body.scrollTop=document.documentElement.scrollTop=0;
+            // document.body.scrollTop=document.documentElement.scrollTop=0;
             this.getListAction(nextProps.params.loginName)
         }
     }
@@ -42,7 +42,7 @@ class UserCollect extends Component{
                 <Link className="item_title" to={'topic/'+rowData.id}><span className="topics_tab" style={{backgroundColor:obj.bgColor}}>{obj.type}</span>{rowData.title}</Link>
                 <div className="content_wrapper item_avatar">
                     <Link to={`user/${rowData.author.loginname}`}>
-                        <img className="border_img" src={rowData.author.avatar_url} />
+                        <img className="border_img" src={replaceImgUrl(rowData.author.avatar_url)} />
                     </Link>
                     <p>{`${rowData.reply_count}/${rowData.visit_count}`}</p>
                     <p>{dateDiff(rowData.last_reply_at)}</p>

@@ -4,7 +4,7 @@ import {Link,hashHistory} from 'react-router'
 import {Tabs, List,Icon,Modal} from 'antd-mobile'
 const TabPane = Tabs.TabPane;
 const alert = Modal.alert;
-import {dateDiff} from 'SYSTEM/tool'
+import {dateDiff,replaceImgUrl} from 'SYSTEM/tool'
 import {getUserInfo,setNavBarTitle,setNavBarPoints,menuOpenChange,setLoginAccessToken,setIsLogin,setUserInfo,setAccountInfo} from 'REDUX/action'
 import {removeLocalData} from 'SYSTEM/system';
 class UserHome extends Component {
@@ -69,7 +69,7 @@ class UserHome extends Component {
             return (
                 <div>
                     <div className="home-card">
-                        <img className="user-img" src={detail.data.avatar_url} alt=""/>
+                        <img className="user-img" src={replaceImgUrl(detail.data.avatar_url)} alt=""/>
                         <p>{detail.data.loginname}</p>
                         <p>{detail.data.score}积分</p>
                         <a href={`#/user/collections/${detail.data.loginname}`}>收藏话题</a>

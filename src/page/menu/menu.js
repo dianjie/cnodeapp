@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {hashHistory} from 'react-router';
-import {menuOpenChange,loadTopics,setNavBarTitle,setLoginModalVisible} from 'REDUX/action';
-import {Drawer, List,WhiteSpace,Badge} from 'antd-mobile';
-import {getTopicAndBg} from 'SYSTEM/tool'
+import {menuOpenChange,loadTopics,setNavBarTitle,setLoginModalVisible,setSystemLoadImg} from 'REDUX/action';
+import {Drawer, List,WhiteSpace,Badge,Switch} from 'antd-mobile';
+import {getTopicAndBg,replaceImgUrl} from 'SYSTEM/tool'
 class Menu extends Component {
     constructor(props) {
         super(props);
@@ -18,7 +18,7 @@ class Menu extends Component {
     }
     _loadMoreData(tabName) {
         const {dispatch} = this.props;
-        document.body.scrollTop=document.documentElement.scrollTop=0;
+        // document.body.scrollTop=document.documentElement.scrollTop=0;
         this.onOpenChange();
         hashHistory.push('tab='+tabName);
         let topics=getTopicAndBg(tabName).type;
@@ -26,14 +26,14 @@ class Menu extends Component {
         dispatch(loadTopics(tabName,1));
     }
     render() {
-        let {menu,loginModal,account}=this.props;
-        let {avatar_url,loginname,id}=account.info;
+        let {menu,loginModal,account,system,dispatch}=this.props;
+        let {avatar_url,loginname}=account.info;
         const bgStyle={
             backgroundColor:'rgb(247, 247, 247)'
         };
         const sidebar = (<List >
             <div className="logo">
-                <img src="http://o4j806krb.qnssl.com/public/images/cnodejs_light.svg"/>
+                <img src="./lib/cnodejs_light.svg"/>
             </div>
             {loginModal.isLogin?<List.Item
                 style={bgStyle}
@@ -41,7 +41,7 @@ class Menu extends Component {
             >
                 <div onClick={()=>{hashHistory.push(`user/${loginname}`)}}>
                     <span>
-                        <img src={avatar_url} className="border_img"/>
+                        <img src={replaceImgUrl(avatar_url)} className="border_img"/>
                     </span>
                     <span className="vertical-md"><span className="dark">{loginname} </span></span>
                 </div>
@@ -89,5 +89,6 @@ class Menu extends Component {
 export default connect(state=>({
     menu: state.menu,
     account:state.account,
-    loginModal:state.loginModal
+    loginModal:state.loginModal,
+    system:state.system
 }))(Menu)
