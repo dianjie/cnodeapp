@@ -2,7 +2,7 @@
 
 基于 [https://github.com/dianjie/cnode](https://github.com/dianjie/cnode) webapp版源码做了一点小修改而出来的app
 
-webapp版：[线上访问](jjboom.net/cnode)
+webapp版：[线上访问](http://jjboom.net/cnode)
 
 app下载：[下载地址](http://jjboom.net/CNode.apk)
 
