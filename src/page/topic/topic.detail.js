@@ -1,8 +1,8 @@
 import React,{Component} from 'react'
 import {connect} from 'react-redux'
 import {Link,hashHistory} from 'react-router'
-import {setLoginModalVisible,setNavBarTitle,setNavBarPoints,resetNavBarPoints,loadTopicDetail,setTopicDetail,menuOpenChange,loginTips,collectTopic,deleteTopic} from 'REDUX/action'
-import {getTopicAndBg,dateDiff,replaceContent} from 'SYSTEM/tool'
+import {setLoginModalVisible,setNavBarTitle,setNavBarPoints,resetNavBarPoints,loadTopicDetail,setTopicDetail,menuOpenChange,loginTips,collectTopic,deleteTopic,setSystemFinish} from 'REDUX/action'
+import {getTopicAndBg,dateDiff,replaceContent,getParameterByName} from 'SYSTEM/tool'
 import {Toast,Icon} from 'antd-mobile'
 import TopicReply from './topic.reply'
 import Editor from '../editor'
@@ -25,18 +25,31 @@ class TopicsDetail extends  Component{
         }));
         dispatch(loadTopicDetail(id))
     }
+    //消息回复定位
+    setMesScroll(){
+        let mesId=getParameterByName('id');
+        if(!mesId) return;
+        let mesCon=document.getElementById(mesId);
+        if(!mesCon) return;
+        console.log(mesCon);
+        document.body.scrollTop=document.documentElement.scrollTop=mesCon.offsetTop-mesCon.offsetHeight
+    }
     componentWillMount(){
         let {params:{topicId}}=this.props;
         this.loadDetail(topicId)
     }
     //文章id更改时，滚动条归零，再次获取文章内容
     componentWillReceiveProps(nextProps){
+        if(nextProps.topics.detail.success || this.props.params.topicId !== nextProps.params.topicId){
+            window.setTimeout(this.setMesScroll.bind(this),100);
+        }
         if(this.props.params.topicId !== nextProps.params.topicId){
             //滚动条归0
-            // document.body.scrollTop=document.documentElement.scrollTop=0;
+            document.body.scrollTop=document.documentElement.scrollTop=0;
             this.loadDetail(nextProps.params.topicId)
         }
     }
+    // 卸载组件清除store的数据
     componentWillUnmount(){
         let {dispatch}=this.props;
         dispatch(setTopicDetail({success:false}))
@@ -70,7 +83,6 @@ class TopicsDetail extends  Component{
         const self=this;
         if(success){
             let obj=getTopicAndBg(data);
-            //todo 回复内容有@用户的需要替换回用户主页
             return(
                 <div className="detail_content">
                     <div className="header topic_header">

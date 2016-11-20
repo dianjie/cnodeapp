@@ -25,10 +25,6 @@ class MyMessages extends Component{
     componentWillMount(){
         this.loadMes()
     }
-    componentWillUnmount(){
-        let {dispatch}=this.props;
-        dispatch(setMesList({hasnot_read_messages:[],has_read_messages:[]}));
-    }
     renderMes(array){
         if(array.length){
             return array.map(function (item, key) {
@@ -38,7 +34,7 @@ class MyMessages extends Component{
                                 <Link>
                                     <img className="border_img" src={replaceImgUrl(item.author.avatar_url)} />
                                 </Link>
-                                <p style={{fontSize:'.26rem'}}><Link to={`user/${item.author.loginname}`}>{item.author.loginname}</Link>在话题 <Link to={`topic/${item.topic.id}`}>{item.topic.title}</Link>中@了你</p>
+                                <p style={{fontSize:'.26rem'}}><Link to={`user/${item.author.loginname}`}>{item.author.loginname}</Link>在话题 <Link to={`topic/${item.topic.id}?id=${item.reply.id}`}>{item.topic.title}</Link>中@了你</p>
                                 <p>{dateDiff(item.reply.create_at)}</p>
                             </div>
                             <div className="reply_detail" dangerouslySetInnerHTML={{__html: replaceContent(item.reply.content)}} />

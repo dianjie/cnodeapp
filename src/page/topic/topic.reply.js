@@ -68,7 +68,7 @@ class TopicReply extends Component{
         let {dispatch,loginModal:{accessToken},reply,topicId}=this.props;
         this.setState({
             disabled:true, buttonText:'回复中...'
-        })
+        });
         ajax().post(`${apiHostUrl}/topic/${topicId}/replies`,{accesstoken:accessToken,content:setTail(content),reply_id:reply.id}).then(function () {
             dispatch(loadTopicDetail(topicId));
             self.resetAction()
@@ -85,18 +85,17 @@ class TopicReply extends Component{
             this.editor=null;
         }else {
             this.refs[`editor_div${index}`].style.display='block';
-            console.dir(document.getElementById(`editor_div${index}`));
             this.editor = new SimpleMDE({ element: document.getElementById(`editor${index}`) });
-            let editor_div=document.getElementById(`editor_div${index}`)
+            let editor_div=document.getElementById(`editor_div${index}`);
             document.body.scrollTop=document.documentElement.scrollTop=editor_div.offsetTop-editor_div.offsetHeight;
             this.editor.value(`@${reply.author.loginname} `)
         }
     }
     render(){
         let {reply,index}=this.props;
-        let {disabled,buttonText}=this.state
+        let {disabled,buttonText}=this.state;
         return(
-            <div className="list_item" key={index}>
+            <div className="list_item" key={index} id={reply.id}>
                 <div className="content_wrapper item_avatar">
                     <Link>
                         <img className="border_img" src={replaceImgUrl(reply.author.avatar_url)} />

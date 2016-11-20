@@ -2,6 +2,7 @@
  * Created by yzsoft on 16/5/13.
  */
 import {store} from 'REDUX/store'
+import {setSystemNetwork,setSystemNoLoadImg} from 'REDUX/action';
 export  const  checkMobile=(mobile)=>{
   let phone = mobile;
   let reg = /^1[3|4|5|7|8]\d{9}$/;
@@ -81,30 +82,90 @@ export const replaceContent=(content)=>{
         return $;
     }else {
         //域外链接
-        let url=$.match(/href="(.*?)"/)[1];
-        let clickFun=`window.open('${url}', '_system','location=yes');`;
+        let url=null;
+        let matchRes=$.match(/href="(.*?)"/);
+        //排除插入空链接问题：<a href>
+        url=matchRes?matchRes[1]:"";
+        let clickFun=`window.open('${url}', '_system');`;
         return `<a href="javascript:void(0)" onclick="${clickFun}">`;
     }
   });
   content=content.replace(/src="\/\//ig,function () {
-      //app下的默认http:
-      if(window.location.protocol=='file:'){
-          return `src="http://`
+      let state=store.getState();
+      let {system:{noLoadImg}}=state;
+      //loadImgState为false是wifi（加载），否则不加载
+      let loadImgState=getLoadImgState();
+      //裂图处理
+      if(noLoadImg){
+          return '';
+      }else if(loadImgState) {
+          store.dispatch(setSystemNoLoadImg(loadImgState));
+          return '';
       }else {
-          return `src="${window.location.protocol}//`
+          //app下的默认http:
+          if(window.location.protocol=='file:'){
+              return `src="http://`
+          }else {
+              return `src="${window.location.protocol}//`
+          }
       }
   });
   return content;
 };
 export const setTail=(content)=>{
   return `${content}
-          使用[antd-moblie[cnode]版](https://github.com/dianjie/cnode)`
+          使用[cnode[antd-moblie]版](https://github.com/dianjie/cnodeapp)`
+};
+export const getConnection=()=>{
+    //开发调试直接返回wifi，打包手机app则利用插件检测
+    if(!navigator.app) return 'WiFi';
+    let networkState = navigator.connection.type;
+    let states = {};
+    if(Connection){
+        states[Connection.UNKNOWN]  = 'Unknown';
+        states[Connection.ETHERNET] = 'Ethernet';
+        states[Connection.WIFI]     = 'WiFi';
+        states[Connection.CELL_2G]  = '2G';
+        states[Connection.CELL_3G]  = '3G';
+        states[Connection.CELL_4G]  = '4G';
+        states[Connection.CELL]     = 'generic';
+        states[Connection.NONE]     = 'No network';
+    };
+    return states[networkState];
+};
+export const  getLoadImgState=()=>{
+    let networkState=getConnection();
+    let noLoadImg=networkState=='WiFi'?false:true;
+    return noLoadImg;
 };
 //某些头像地址还是//情况
 export const replaceImgUrl=(url)=>{
-    if(url.indexOf('//')==0){
-        return `http:${url}`
+    let state=store.getState();
+    let {system:{noLoadImg}}=state;
+    //loadImgState为false是wifi（加载），否则不加载
+    let loadImgState=getLoadImgState();
+    //两种情况，一本来不加载图片，二，加载图片，但网络不是wifi环境
+    if(noLoadImg){
+        return './lib/icon.png'
+    }else if(loadImgState) {
+        store.dispatch(setSystemNoLoadImg(loadImgState));
+        return './lib/icon.png';
     }else {
-        return url
+        if(url.indexOf('//')==0){
+            return `http:${url}`
+        }else {
+            return url
+        }
     }
+};
+export const getParameterByName=(name, url)=>{
+    if (!url) {
+        url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 };

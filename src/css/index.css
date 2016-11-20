@@ -24,6 +24,9 @@ a.dark, a.dark:active, a.dark:link, a.dark:visited {
     color: #666;
     text-decoration: none;
 }
+.lh{
+    line-height: .6rem;
+}
 img {
     height: auto;
     max-width: 100%;
@@ -46,6 +49,7 @@ pre code {
     white-space: pre-wrap;
     background-color: transparent;
     line-height: 1.4;
+    word-wrap: break-word;
 }
 code, pre {
     font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
@@ -59,7 +63,6 @@ code, pre {
 .preview p {
     white-space: pre-wrap;
     white-space: -moz-pre-wrap;
-    white-space: -pre-wrap;
     white-space: -o-pre-wrap;
     word-wrap: break-word;
     line-height: 2em;

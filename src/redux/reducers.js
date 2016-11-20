@@ -3,11 +3,21 @@ import 'babel-polyfill'
 import {setSessionData,getSessionData,getLocalData} from '../system/system';
 const system = (state = {
     animating: false,
+    finish:false,
+    noLoadImg:false
 }, action)=> {
     switch (action.type) {
         case 'set_system_animating':
             return Object.assign({}, state, {
                 animating: action.animating
+            });
+        case 'set_system_finish':
+            return Object.assign({}, state, {
+                finish: action.finish
+            });
+        case 'set_system_noLoadImg':
+            return Object.assign({}, state, {
+                noLoadImg: action.noLoadImg
             });
         default:
             return state;
@@ -51,32 +61,41 @@ const menu=(state={
 };
 const topics=(state={
     list:[],
+    all:{list:[],page:0},
+    good:{list:[],page:0},
+    share:{list:[],page:0},
+    ask:{list:[],page:0},
+    job:{list:[],page:0},
     detail:{data:{},success:false},
-    isLoadingMore:false,
-    isRefreshing:false,
-    page:0
+    isLoadingMore:false
 },action)=>{
     switch (action.type){
         case 'set_topics_list':
-            let newState = state;
-            if (action.page === 1) {
-                newState = Object.assign({}, state, {
-                    list: action.list
-                });
-            } else {
-                newState = Object.assign({}, state, {
-                    list: state.list.concat(action.list)
-                });
+            let obj={list: state[action.tabName].list.concat(action.tabData.list),page:action.tabData.page};
+            switch (action.tabName){
+                case 'all':
+                    return Object.assign({}, state, {
+                        all: obj
+                    });
+                case 'good':
+                    return Object.assign({}, state, {
+                        good: obj
+                    });
+                case 'share':
+                    return Object.assign({}, state, {
+                        share: obj
+                    });
+                case 'ask':
+                    return Object.assign({}, state, {
+                        ask: obj
+                    });
+                case 'job':
+                    return Object.assign({}, state, {
+                        job: obj
+                    });
+                default:
+                    return state;
             }
-            return newState;
-        case 'set_topics_refresh':
-            return Object.assign({}, state, {
-                isRefreshing: action.isRefreshing
-            });
-        case 'set_topics_page':
-            return Object.assign({}, state, {
-                page: action.page
-            });
         case 'set_topics_loadingMore':
             return Object.assign({}, state, {
                 isLoadingMore: action.isLoadingMore

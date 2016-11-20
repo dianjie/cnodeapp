@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {hashHistory} from 'react-router';
-import {menuOpenChange,loadTopics,setNavBarTitle,setLoginModalVisible,setSystemLoadImg} from 'REDUX/action';
+import {menuOpenChange,loadTopics,setNavBarTitle,setLoginModalVisible,setSystemNoLoadImg} from 'REDUX/action';
 import {Drawer, List,WhiteSpace,Badge,Switch} from 'antd-mobile';
 import {getTopicAndBg,replaceImgUrl} from 'SYSTEM/tool'
 class Menu extends Component {
@@ -17,13 +17,13 @@ class Menu extends Component {
         dispatch(menuOpenChange());
     }
     _loadMoreData(tabName) {
-        const {dispatch} = this.props;
-        // document.body.scrollTop=document.documentElement.scrollTop=0;
+        const {dispatch,topics} = this.props;
         this.onOpenChange();
         hashHistory.push('tab='+tabName);
-        let topics=getTopicAndBg(tabName).type;
-        dispatch(setNavBarTitle(topics));
-        dispatch(loadTopics(tabName,1));
+        let title=getTopicAndBg(tabName).type;
+        dispatch(setNavBarTitle(title));
+        if(topics[tabName].page) return;
+        dispatch(loadTopics(tabName,++topics[tabName].page));
     }
     render() {
         let {menu,loginModal,account,system,dispatch}=this.props;
@@ -67,6 +67,9 @@ class Menu extends Component {
                     <Badge text={account.mesCount} style={{ marginLeft: 12 }} />
                 </List.Item>
             </div>:''}
+            <List.Item  style={bgStyle}
+                extra={<Switch checked={system.noLoadImg} onChange={()=>{dispatch(setSystemNoLoadImg(!system.noLoadImg))}}/>}
+            >省流量</List.Item>
             <List.Item onClick={()=>{this.onOpenChange();hashHistory.push('about')}} style={bgStyle}
             >关于</List.Item>
         </List>);
@@ -88,6 +91,7 @@ class Menu extends Component {
 }
 export default connect(state=>({
     menu: state.menu,
+    topics: state.topics,
     account:state.account,
     loginModal:state.loginModal,
     system:state.system

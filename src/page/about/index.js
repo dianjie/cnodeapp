@@ -24,11 +24,18 @@ class UserHome extends Component {
                 <div className="detail_content">
                     <div>
                         <h3>项目地址</h3>
-                        <p><a href="https://github.com/dianjie/cnodeapp" target="_blank">https://github.com/dianjie/cnode</a></p>
+                        <p><a href="https://github.com/dianjie/cnodeapp" target="_blank">https://github.com/dianjie/cnodeapp</a></p>
+                    </div>
+                    <div>
+                        <h3>开发初衷</h3>
+                        <p className="lh">
+                            虽github上开源了好多版本的，但自己没亲自写，都是云里云雾的，就搞一个给自己玩的app!
+                            一弄起来,发觉很多东西要弄的，处理域内外链接问题，流量消耗问题、链接能在app上打开问题各种毛病；所以代码还是要多写！！
+                        </p>
                     </div>
                     <div>
                         <h3>版本</h3>
-                        <p>不知道多少版本</p>
+                        <p>I don't not!</p>
                     </div>
                 </div>
             </div>

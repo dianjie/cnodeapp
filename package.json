@@ -1,7 +1,7 @@
 {
-  "name": "xyinit",
+  "name": "cnode-app",
   "version": "1.0.0",
-  "description": "a build for gulp and webpack",
+  "description": "cnode[antd-mobile]app",
   "scripts": {
     "start": "gulp",
     "build": "gulp build"
@@ -12,12 +12,19 @@
     "react-redux",
     "gulp"
   ],
-  "author": "xiaoyu",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dianjie/cnodeapp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dianjie/cnodeapp/issues"
+  },
+  "homepage": "https://github.com/dianjie/cnodeapp#readme",
+  "author": "dianjie",
   "license": "ISC",
   "dependencies": {
     "@fdaciuk/ajax": "^2.1.2",
     "antd-mobile": "^0.9.8",
-    "rc-form": "^1.0.1",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
     "react-redux": "^4.4.5",
@@ -53,11 +60,12 @@
     "webpack-visualizer-plugin": "^0.1.5"
   },
   "cordovaPlugins": [
+	"cordova-plugin-device",
     "cordova-plugin-whitelist",
-    "cordova-plugin-splashscreen",
+	"cordova-plugin-splashscreen",
+	"cordova-plugin-inappbrowser",
     "cordova-hot-code-push-plugin",
     "phonegap-plugin-barcodescanner",
-    "cordova-plugin-inappbrowser",
-    "cordova-plugin-device"
+	"cordova-plugin-network-information"
   ]
 }

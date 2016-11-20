@@ -4,20 +4,38 @@ import {connect} from 'react-redux'
 import {loadTopics,setNavBarTitle,setNavBarPoints} from 'REDUX/action'
 import {getTopicAndBg,dateDiff,replaceImgUrl} from 'SYSTEM/tool'
 import { ListView,Icon} from 'antd-mobile'
+import {setSessionData,getSessionData} from 'SYSTEM/system';
 class TopicsList extends Component {
+    //备注：全部、精华、招聘、分享、问答共用一个路由，一个组件，所以写了一些很奇怪的方法
     constructor(props){
         super(props);
+        let {params:{tabName},topics} = this.props;
+        this.setScrollTop=this.setScrollTop.bind(this)
     }
     componentWillMount(){
-        let {topics:{list}}=this.props;
-        if(list.length==0){
-            this._loadMoreData();
-        }
+        const {topics,params:{tabName}} = this.props;
+        if(topics[tabName].page) return;
+        this._loadMoreData();
     }
-    componentDidMount(){
+    //设置滚动条位置
+    setScrollTop(){
+        const {topics:{isLoadingMore},params:{tabName}} = this.props;
+        let topicScroll= getSessionData('topicScroll')||[];
+        let index=topicScroll.findIndex(function(value, index, arr) {
+            return value.tabName == tabName;
+        });
+        let scroll=index==-1?0:topicScroll[index].scroll;
+        if(isLoadingMore){
+            //正在加载延时调用自己
+            window.setTimeout(this.setScrollTop,150)
+        }else {
+            document.body.scrollTop=document.documentElement.scrollTop=scroll
+        }
+
+    }
+    setHeaderTitle(title){
         const {dispatch,params} = this.props;
-        console.log(this.refs);
-        let topics=getTopicAndBg(params.tabName).type;
+        let topics=getTopicAndBg(title||params.tabName).type;
         dispatch(setNavBarTitle(topics));
         dispatch(setNavBarPoints({
             left:true,
@@ -26,6 +44,50 @@ class TopicsList extends Component {
             color:'',
             iconName:'bars'
         }));
+    }
+    componentDidMount(){
+        this.setHeaderTitle();
+        this.setScrollTop()
+    }
+    //路由参数改变，重置之前版块的滚动条位置
+    componentWillReceiveProps(nextProps){
+        let self=this;
+        if(this.props.params.tabName !== nextProps.params.tabName){
+            this.saveScroll().then(function () {
+                //先全部归零
+                self.setHeaderTitle(nextProps.params.tabName);
+                document.body.scrollTop=document.documentElement.scrollTop=0;
+                window.setTimeout(self.setScrollTop,100)
+            });
+        }
+    }
+    //路由共用问题，路由参数改变不能及时更新组件，所以采取这笨拙的方法
+    shouldComponentUpdate(nextProps){
+        return true
+    }
+    //使用Promise主要是为了组件没卸载的时候能准确的先设置滚动条位置再返回之前版块的滚动条位置
+    saveScroll(){
+        return new Promise((resolve, reject) => {
+            const {params:{tabName}} = this.props;
+            let topicScroll= getSessionData('topicScroll')||[];
+            let obj={};
+            obj.tabName=tabName;
+            obj.scroll=document.body.scrollTop||document.documentElement.scrollTop;
+            let index=topicScroll.findIndex(function(value, index, arr) {
+                return value.tabName == tabName;
+            });
+            if(index !== -1){
+                topicScroll[index]=obj
+            }else {
+                topicScroll.push(obj)
+            }
+            setSessionData("topicScroll",topicScroll);
+            resolve()
+        });
+    }
+    //组件卸载，存储滚动条位置
+    componentWillUnmount(){
+        this.saveScroll();
     }
     _renderRow(rowData,SectionId,rowID) {
         let obj=getTopicAndBg(rowData);
@@ -43,34 +105,32 @@ class TopicsList extends Component {
         )
     }
     _loadMoreData() {
-        const {dispatch,params,topics} = this.props;
-        dispatch(loadTopics(params.tabName,++topics.page));
+        let {dispatch,params:{tabName},topics} = this.props;
+        dispatch(loadTopics(tabName,++topics[tabName].page));
     }
     onEndReached() {
         let {topics}=this.props;
-        if (topics.isLoadingMore ||topics.isRefreshing) {
+        if (topics.isLoadingMore) {
             return;
         };
         this._loadMoreData();
     }
     render() {
-        let {topics}=this.props;
-        let {list}=topics;
+        let {topics,params:{tabName}}=this.props;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        let list=topics[tabName].list;
         return (
             <div className="pt_09">
                 <ListView
-                    ref="topicList"
                     dataSource={ds.cloneWithRows(list)}
-                    initialListSize={10}
                     useBodyScroll
                     renderRow={this._renderRow.bind(this)}
-                    pageSize={7}
                     renderSeparator={(sectionID, rowID)=>{return(
                     <div key={`${sectionID}-${rowID}`} style={{height:'.15rem',backgroundColor:"#f5f5f9"}}></div>
                     )}}
                     scrollRenderAheadDistance={900}
                     onEndReached={this.onEndReached.bind(this)}
+                    initialListSize={list.length-8}
                     onEndReachedThreshold={10}
                     scrollEventThrottle={30}
                 />

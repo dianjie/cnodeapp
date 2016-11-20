@@ -69,7 +69,7 @@ class UserHome extends Component {
             return (
                 <div>
                     <div className="home-card">
-                        <img className="user-img" src={replaceImgUrl(detail.data.avatar_url)} alt=""/>
+                        <img className="user-img" onClick={()=>{window.open(`https://github.com/${detail.data.githubUsername}`,"_system")}} src={replaceImgUrl(detail.data.avatar_url)} alt=""/>
                         <p>{detail.data.loginname}</p>
                         <p>{detail.data.score}积分</p>
                         <a href={`#/user/collections/${detail.data.loginname}`}>收藏话题</a>

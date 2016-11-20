@@ -23,10 +23,13 @@ app下载：[下载地址](http://jjboom.net/CNode.apk)
 ### 下载源码 ###
     git clone https://github.com/dianjie/cnodeapp.git
 
-### 安装cordova插件 ###
+### 添加平台 ###
+	cordova platform add android
 
-    cordova plugin add cordova-plugin-whitelist && cordova plugin add cordova-plugin-splashscreen && cordova plugin add cordova-hot-code-push-plugin && cordova plugin add phonegap-plugin-barcodescanner && cordova plugin add cordova-plugin-inappbrowser && cordova plugin add cordova-plugin-device
-    
+### 安装cordova插件（添加平台时没自动安装则自行安装） ###
+
+    cordova plugin add cordova-plugin-whitelist && cordova plugin add cordova-plugin-splashscreen && cordova plugin add cordova-hot-code-push-plugin && cordova plugin add phonegap-plugin-barcodescanner && cordova plugin add cordova-plugin-inappbrowser && cordova plugin add cordova-plugin-device && cordova plugin add cordova-plugin-network-information
+
 - `cordova-hot-code-push-plugin`只是为了处理代码热更新（具体使用看官方文档，其他依赖自行安装）
 
 ### 安装依赖 ###
@@ -37,7 +40,7 @@ app下载：[下载地址](http://jjboom.net/CNode.apk)
     
 ### 发布代码 ###
     npm run build
-- 发布代码后需替换css的字体文件`//at.alicdn.com/t/`全部替换成`../lib/`(找不到插件替换。。[黑脸。黑脸])
+- 发布代码后需替换`www/style/indxe.css`的字体文件`//at.alicdn.com/t/`全部替换成`../lib/antd-mobile/`(找不到插件替换。。[黑脸。黑脸])
 
 ### 处理热更新 ###
 	cordova-hcp build
@@ -63,3 +66,16 @@ app下载：[下载地址](http://jjboom.net/CNode.apk)
 
 具体看官方文档！！
 修改`content_url`地址也需要修改`config.xml`下的`<config-file url="http://jjboom.net/cnodeApp/chcp.json" />`地址！！！
+
+### 打包外壳 ###
+	cordova build android
+
+
+### 更新记录 ###
+
+#### 2016-11-20更新问题 ####
+- 列表查看位置记录
+- 消息查看回复定位
+- 域外链接app内能浏览
+- 省流量处理
+- 静态资源归类
