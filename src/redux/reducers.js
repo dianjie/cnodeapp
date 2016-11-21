@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux';
 import 'babel-polyfill'
-import {setSessionData,getSessionData,getLocalData} from '../system/system';
+import {getLocalData} from '../system/system';
 const system = (state = {
     animating: false,
     network:'',
@@ -65,7 +65,6 @@ const menu=(state={
     }
 };
 const topics=(state={
-    list:[],
     all:{list:[],page:0},
     good:{list:[],page:0},
     share:{list:[],page:0},
@@ -113,10 +112,10 @@ const topics=(state={
             return state;
     }
 };
-const loginModal=(state={
-    isLogin:false,
-    accessToken:getLocalData('accessToken')||'',
-    visible:false,
+const loginModal = (state = {
+    isLogin: getLocalData('accountInfo') && getLocalData('accessToken') ? true : false,
+    accessToken: getLocalData('accessToken') || '',
+    visible: false,
 },action)=>{
     switch (action.type){
         case 'set_loginModal_isLogin':
@@ -136,7 +135,7 @@ const loginModal=(state={
     }
 };
 const account=(state={
-    info:{
+    info:getLocalData('accountInfo')||{
         avatar_url: "",
         id: "",
         loginname: "",

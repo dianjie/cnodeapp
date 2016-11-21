@@ -14,14 +14,7 @@ class LayOut extends Component {
         let {dispatch}=this.props;
         dispatch(menuOpenChange())
     }
-    componentWillMount(){
-        let {dispatch}=this.props;
-        let accessToken=getLocalData("accessToken");
-        if(!accessToken) return;
-        dispatch(handleLogin(accessToken))
-    }
     renderNavBar() {
-        let {dispatch}=this.props;
         let {points, title}=this.props.navBar;
         let {left, leftClick, right, color, iconName,rightContent}=points;
         if (left && iconName == '') {

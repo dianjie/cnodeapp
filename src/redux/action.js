@@ -255,6 +255,7 @@ export const handleLogin=(accesstoken)=>{
     return dispatch=>{
         callApi("验证accessToken的正确性",{accesstoken}).then(function (res) {
             setLocalData('accessToken',accesstoken);
+            setLocalData('accountInfo',res);
             dispatch(setAccountInfo(res));
             dispatch(getMesCount(accesstoken));
             dispatch(setLoginAccessToken(accesstoken));
@@ -262,6 +263,7 @@ export const handleLogin=(accesstoken)=>{
         }).catch((error) => {
             Toast.fail(error.error_msg);
             removeLocalData('accessToken');
+            removeLocalData('accountInfo');
             //重置账号信息
             dispatch(setAccountInfo({
                 avatar_url: "",
