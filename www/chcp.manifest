@@ -5,7 +5,7 @@
   },
   {
     "file": "js/main.js",
-    "hash": "b2c54ca9110edf69a2b4724757abcdbf"
+    "hash": "f65cbc63ab4e389328538e4e61791131"
   },
   {
     "file": "js/vendor.js",
@@ -70,10 +70,6 @@
   {
     "file": "lib/simplemde/simplemde.min.js",
     "hash": "89ce5fb86f22cc98312204b126df90d4"
-  },
-  {
-    "file": "stats.html",
-    "hash": "1cc40f7c2deb95e2ca94eac478cf1570"
   },
   {
     "file": "styles/index.css",
