@@ -3,6 +3,7 @@ import 'babel-polyfill'
 import {setSessionData,getSessionData,getLocalData} from '../system/system';
 const system = (state = {
     animating: false,
+    network:'',
     finish:false,
     noLoadImg:false
 }, action)=> {
@@ -10,6 +11,10 @@ const system = (state = {
         case 'set_system_animating':
             return Object.assign({}, state, {
                 animating: action.animating
+            });
+        case 'set_system_network':
+            return Object.assign({}, state, {
+                network: action.network
             });
         case 'set_system_finish':
             return Object.assign({}, state, {

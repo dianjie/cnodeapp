@@ -92,22 +92,28 @@ export const replaceContent=(content)=>{
   });
   content=content.replace(/src="\/\//ig,function () {
       let state=store.getState();
-      let {system:{noLoadImg}}=state;
+      let {system:{noLoadImg,network}}=state;
       //loadImgState为false是wifi（加载），否则不加载
       let loadImgState=getLoadImgState();
-      //裂图处理
-      if(noLoadImg){
-          return '';
-      }else if(loadImgState) {
-          store.dispatch(setSystemNoLoadImg(loadImgState));
-          return '';
-      }else {
+      let defaultText='';
+      let init=function () {
           //app下的默认http:
           if(window.location.protocol=='file:'){
               return `src="http://`
           }else {
               return `src="${window.location.protocol}//`
           }
+      };
+      //裂图处理
+      if(noLoadImg){
+          return defaultText;
+      }else if(network !=="" && network !=="WiFi"){
+          return init();
+      }else  if(loadImgState) {
+          store.dispatch(setSystemNoLoadImg(loadImgState));
+          return defaultText;
+      }else {
+          return init();
       }
   });
   return content;
@@ -121,16 +127,14 @@ export const getConnection=()=>{
     if(!navigator.app) return 'WiFi';
     let networkState = navigator.connection.type;
     let states = {};
-    if(Connection){
-        states[Connection.UNKNOWN]  = 'Unknown';
-        states[Connection.ETHERNET] = 'Ethernet';
-        states[Connection.WIFI]     = 'WiFi';
-        states[Connection.CELL_2G]  = '2G';
-        states[Connection.CELL_3G]  = '3G';
-        states[Connection.CELL_4G]  = '4G';
-        states[Connection.CELL]     = 'generic';
-        states[Connection.NONE]     = 'No network';
-    };
+    states[Connection.UNKNOWN]  = 'Unknown';
+    states[Connection.ETHERNET] = 'Ethernet';
+    states[Connection.WIFI]     = 'WiFi';
+    states[Connection.CELL_2G]  = '2G';
+    states[Connection.CELL_3G]  = '3G';
+    states[Connection.CELL_4G]  = '4G';
+    states[Connection.CELL]     = 'generic';
+    states[Connection.NONE]     = 'No network';
     return states[networkState];
 };
 export const  getLoadImgState=()=>{
@@ -141,21 +145,28 @@ export const  getLoadImgState=()=>{
 //某些头像地址还是//情况
 export const replaceImgUrl=(url)=>{
     let state=store.getState();
-    let {system:{noLoadImg}}=state;
+    let {system:{noLoadImg,network}}=state;
     //loadImgState为false是wifi（加载），否则不加载
     let loadImgState=getLoadImgState();
-    //两种情况，一本来不加载图片，二，加载图片，但网络不是wifi环境
-    if(noLoadImg){
-        return './lib/icon.png'
-    }else if(loadImgState) {
-        store.dispatch(setSystemNoLoadImg(loadImgState));
-        return './lib/icon.png';
-    }else {
+    let defaultImg='./lib/icon.png';
+    let init=function () {
         if(url.indexOf('//')==0){
             return `http:${url}`
         }else {
             return url
         }
+    };
+    //两种情况，一本来不加载图片，二，加载图片，但网络不是wifi环境
+    //增加记录首次进入app网络状态
+    if(noLoadImg){
+        return defaultImg;
+    }else if(network !=="" && network !=="WiFi"){
+        return init();
+    }else if(loadImgState) {
+        store.dispatch(setSystemNoLoadImg(loadImgState));
+        return defaultImg;
+    }else {
+        return init();
     }
 };
 export const getParameterByName=(name, url)=>{

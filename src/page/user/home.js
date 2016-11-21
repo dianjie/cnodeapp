@@ -23,7 +23,6 @@ class UserHome extends Component {
         removeLocalData('accessToken');
         dispatch(setIsLogin(false));
         dispatch(setLoginAccessToken(''));
-        dispatch(setLoginAccessToken(''));
         dispatch(setAccountInfo({
             avatar_url: "",
             id: "",

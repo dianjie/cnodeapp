@@ -22,8 +22,9 @@ class Menu extends Component {
         hashHistory.push('tab='+tabName);
         let title=getTopicAndBg(tabName).type;
         dispatch(setNavBarTitle(title));
-        if(topics[tabName].page) return;
-        dispatch(loadTopics(tabName,++topics[tabName].page));
+        let {page}=topics[tabName];
+        if(page) return;
+        dispatch(loadTopics(tabName,++page));
     }
     render() {
         let {menu,loginModal,account,system,dispatch}=this.props;

@@ -5,11 +5,11 @@
   },
   {
     "file": "js/main.js",
-    "hash": "3a82ed80a49488c55029f907fec42804"
+    "hash": "b2c54ca9110edf69a2b4724757abcdbf"
   },
   {
     "file": "js/vendor.js",
-    "hash": "6d7241908779103341a4ac3ce32942fd"
+    "hash": "67b73d19a0bfa22caef092134e5027f3"
   },
   {
     "file": "lib/antd-mobile/font_1457169990_5499172.eot",
@@ -73,10 +73,10 @@
   },
   {
     "file": "stats.html",
-    "hash": "8b3e9d3b5a83865eab78b92bd733fa41"
+    "hash": "1cc40f7c2deb95e2ca94eac478cf1570"
   },
   {
     "file": "styles/index.css",
-    "hash": "1d468a59894cc6292d6643d23e5fd1da"
+    "hash": "3227f5ffa290245d2ee71cf4cbb794cc"
   }
 ]

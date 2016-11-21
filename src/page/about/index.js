@@ -23,14 +23,17 @@ class UserHome extends Component {
             <div className="pt_09">
                 <div className="detail_content">
                     <div>
+                        <h3>关于项目</h3>
+                        <p>该项目是基于<a href="https://cnodejs.org">Cnodejs</a>的api</p>
+                    </div>
+                    <div>
                         <h3>项目地址</h3>
                         <p><a href="https://github.com/dianjie/cnodeapp" target="_blank">https://github.com/dianjie/cnodeapp</a></p>
                     </div>
                     <div>
-                        <h3>开发初衷</h3>
+                        <h3>问题反馈</h3>
                         <p className="lh">
-                            虽github上开源了好多版本的，但自己没亲自写，都是云里云雾的，就搞一个给自己玩的app!
-                            一弄起来,发觉很多东西要弄的，处理域内外链接问题，流量消耗问题、链接能在app上打开问题各种毛病；所以代码还是要多写！！
+                            <a href="https://github.com/dianjie/cnodeapp/issues">https://github.com/dianjie/cnodeapp/issues</a>
                         </p>
                     </div>
                     <div>

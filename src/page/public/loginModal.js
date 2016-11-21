@@ -33,6 +33,7 @@ class LoginModal extends Component{
         const {dispatch}=this.props;
         cordova.plugins.barcodeScanner.scan(
             function (result) {
+                if (!result) return;
                 dispatch(handleLogin(result.text));
             },
             function (error) {

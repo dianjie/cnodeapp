@@ -1,7 +1,13 @@
 import {store} from './../redux/store'
 import {callApi} from './../system/apiHelper'
 import {Toast} from 'antd-mobile'
-import {setSessionData,getSessionData,setLocalData,getLocalData,removeLocalData} from '../system/system';
+import {setLocalData,removeLocalData} from '../system/system';
+export const setSystemNetwork=(network)=>{
+    return {
+        type: 'set_system_network',
+        network
+    }
+};
 export const setSystemAnimating=(animating)=>{
     return {
         type: 'set_system_animating',

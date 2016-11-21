@@ -106,7 +106,8 @@ class TopicsList extends Component {
     }
     _loadMoreData() {
         let {dispatch,params:{tabName},topics} = this.props;
-        dispatch(loadTopics(tabName,++topics[tabName].page));
+        let {page}=topics[tabName];
+        dispatch(loadTopics(tabName, ++page));
     }
     onEndReached() {
         let {topics}=this.props;
