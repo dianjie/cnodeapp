@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {hashHistory} from 'react-router';
 import Menu from 'PAGE/menu/menu';
 import LoginModal from './loginModal';
-import {menuOpenChange,handleLogin,resetNavBarPoints} from 'REDUX/action';
+import {menuOpenChange,handleLogin,resetNavBarPoints,getMesCount} from 'REDUX/action';
 import {getLocalData} from 'SYSTEM/system';
 import {NavBar, Icon,ActivityIndicator} from 'antd-mobile';
 class LayOut extends Component {
@@ -13,6 +13,11 @@ class LayOut extends Component {
     onOpenChange() {
         let {dispatch}=this.props;
         dispatch(menuOpenChange())
+    }
+    componentWillMount(){
+      let {dispatch,loginModal:{isLogin,accessToken}}=this.props;
+      if(!isLogin) return false;
+      dispatch(getMesCount(accessToken))
     }
     renderNavBar() {
         let {points, title}=this.props.navBar;

@@ -1,7 +1,7 @@
 import {store} from './../redux/store'
 import {callApi} from './../system/apiHelper'
 import {Toast} from 'antd-mobile'
-import {setLocalData,removeLocalData} from '../system/system';
+import {setLocalData,removeLocalData,getLocalData} from '../system/system';
 export const setSystemNetwork=(network)=>{
     return {
         type: 'set_system_network',
