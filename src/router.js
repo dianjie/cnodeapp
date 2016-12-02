@@ -14,6 +14,11 @@ import UserHome from './page/user/home';
 import MyMessages from './page/mine/messages';
 import About from './page/about';
 class RouterContent extends Component {
+    constructor(props){
+      super(props);
+      this.onBack=this.onBack.bind(this);
+      this.exitApp=this.exitApp.bind(this);
+    }
     //为了处理抽屉菜单省流量默认选中问题
     checkConnection() {
         let networkState = getConnection();
@@ -25,13 +30,14 @@ class RouterContent extends Component {
         let hashUrl=window.location.hash;
         hashUrl=hashUrl.slice(0,hashUrl.indexOf("?"));
         if(/^\#\/tab=.*/.test(hashUrl)){
-            Toast.info('再点一次退出！！');
-            document.removeEventListener('backbutton',this.onBack.bind(this),false);
-            document.addEventListener('backbutton',this.exitApp.bind(this),false);
-            window.setTimeout(function () {
-                document.removeEventListener('backbutton',self.exitApp.bind(this),false);
-                document.addEventListener('backbutton',self.onBack.bind(self),false);
-            },2500)
+            Toast.info('再点一次退出！！',1);
+            document.removeEventListener('backbutton',self.onBack,false);
+            document.addEventListener('backbutton',self.exitApp,false);
+            let timeOut=window.setTimeout(function () {
+                window.clearTimeout(timeOut);
+                document.removeEventListener('backbutton',self.exitApp,false);
+                document.addEventListener('backbutton',self.onBack,false);
+            },2000)
         }else {
             hashHistory.goBack()
         }
