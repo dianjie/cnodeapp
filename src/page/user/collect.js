@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
+import {hashHistory} from 'react-router'
 import {connect} from 'react-redux'
-import {Link} from 'react-router'
 import {getCollectList,setNavBarTitle,setNavBarPoints,setAccountCollect} from 'REDUX/action'
 import {getTopicAndBg,dateDiff,replaceImgUrl} from 'SYSTEM/tool'
 import { ListView } from 'antd-mobile'
@@ -35,15 +35,19 @@ class UserCollect extends Component{
             this.getListAction(nextProps.params.loginName)
         }
     }
+    _rowClick(rowData,e){
+        e.target.tagName=='IMG'?hashHistory.push(`user/${rowData.author.loginname}`):hashHistory.push('topic/'+rowData.id)
+    }
     _renderRow(rowData,SectionId,rowID) {
+        let self=this;
         let obj=getTopicAndBg(rowData);
         return(
-            <div className="list_item" key={rowID}>
-                <Link className="item_title" to={'topic/'+rowData.id}><span className="topics_tab" style={{backgroundColor:obj.bgColor}}>{obj.type}</span>{rowData.title}</Link>
+            <div className="list_item" key={rowID} onClick={self._rowClick.bind(this,rowData)}>
+                <div className="item_title"><span className="topics_tab" style={{backgroundColor:obj.bgColor}}>{obj.type}</span>{rowData.title}</div>
                 <div className="content_wrapper item_avatar">
-                    <Link to={`user/${rowData.author.loginname}`}>
+                    <div>
                         <img className="border_img" src={replaceImgUrl(rowData.author.avatar_url)} />
-                    </Link>
+                    </div>
                     <p>{`${rowData.reply_count}/${rowData.visit_count}`}</p>
                     <p>{dateDiff(rowData.last_reply_at)}</p>
                 </div>

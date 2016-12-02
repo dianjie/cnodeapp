@@ -1,5 +1,6 @@
 import {Router, Route, hashHistory, IndexRedirect} from 'react-router';
 import {store} from './redux/store'
+import {Toast} from 'antd-mobile'
 import {setSystemNoLoadImg, setSystemNetwork} from 'REDUX/action';
 import {getConnection} from 'SYSTEM/tool';
 import React, {Component} from 'react';
@@ -19,11 +20,31 @@ class RouterContent extends Component {
         store.dispatch(setSystemNoLoadImg(networkState == 'WiFi' ? false : true));
         store.dispatch(setSystemNetwork(networkState))
     }
+    onBack(){
+        let self=this;
+        let hashUrl=window.location.hash;
+        hashUrl=hashUrl.slice(0,hashUrl.indexOf("?"));
+        if(/^\#\/tab=.*/.test(hashUrl)){
+            Toast.info('再点一次退出！！');
+            document.removeEventListener('backbutton',this.onBack.bind(this),false);
+            document.addEventListener('backbutton',this.exitApp.bind(this),false);
+            window.setTimeout(function () {
+                document.removeEventListener('backbutton',self.exitApp.bind(this),false);
+                document.addEventListener('backbutton',self.onBack.bind(self),false);
+            },2500)
+        }else {
+            hashHistory.goBack()
+        }
+    }
+    exitApp(){
+        navigator.app.exitApp()
+    }
     componentWillMount() {
         let self = this;
         document.addEventListener("deviceready", function () {
             window.open = cordova.InAppBrowser.open;
             self.checkConnection();
+            document.addEventListener('backbutton',self.onBack.bind(self),false);
         }, false);
     }
     render() {
