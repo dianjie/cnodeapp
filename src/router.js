@@ -29,7 +29,7 @@ class RouterContent extends Component {
         let self=this;
         let hashUrl=window.location.hash;
         hashUrl=hashUrl.slice(0,hashUrl.indexOf("?"));
-        if(/^\#\/tab=.*/.test(hashUrl)){
+        if(/^#\/tab=.*$/.test(hashUrl)){
             Toast.info('再点一次退出！！',1);
             document.removeEventListener('backbutton',self.onBack,false);
             document.addEventListener('backbutton',self.exitApp,false);
