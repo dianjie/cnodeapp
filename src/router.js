@@ -50,7 +50,7 @@ class RouterContent extends Component {
         document.addEventListener("deviceready", function () {
             window.open = cordova.InAppBrowser.open;
             self.checkConnection();
-            document.addEventListener('backbutton',self.onBack.bind(self),false);
+            document.addEventListener('backbutton',self.onBack,false);
         }, false);
     }
     render() {
