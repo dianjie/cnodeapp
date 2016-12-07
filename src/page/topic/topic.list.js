@@ -9,7 +9,6 @@ class TopicsList extends Component {
     //备注：全部、精华、招聘、分享、问答共用一个路由，一个组件，所以写了一些很奇怪的方法
     constructor(props){
         super(props);
-        let {params:{tabName},topics} = this.props;
         this.setScrollTop=this.setScrollTop.bind(this)
     }
     componentWillMount(){
